@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.fitlife.ManageProgramsController"
+            style="-fx-background-color: #f5f5f5;" prefWidth="800" prefHeight="600">
+
+    <!-- Top Bar -->
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3,0,0,1);">
+            <Button text="← Back" onAction="#goBack" style="-fx-background-color: transparent; -fx-font-size: 14;"/>
+            <Label text="Manage Programs" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Exit" onAction="#exitApp" style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
+        </HBox>
+    </top>
+
+    <!-- Center Content -->
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Program Form -->
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="programNameField" promptText="Program Name" style="-fx-background-radius: 5;" prefWidth="200"/>
+                <TextField fx:id="durationField" promptText="Duration (weeks)" style="-fx-background-radius: 5;" prefWidth="120"/>
+                <TextField fx:id="priceField" promptText="Price" style="-fx-background-radius: 5;" prefWidth="120"/>
+            </HBox>
+
+            <!-- Action Buttons -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Add" onAction="#addProgram" style="-fx-background-color: #00aaff; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Update" onAction="#updateProgram" style="-fx-background-color: #ffaa00; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Delete" onAction="#deleteProgram" style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Clear" onAction="#clearAllPrograms" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 5;"/>
+            </HBox>
+
+            <!-- Table -->
+            <TableView fx:id="programTable" prefHeight="400" prefWidth="700" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;">
+                <columns>
+                    <TableColumn fx:id="colProgramId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colProgramName" text="Name" prefWidth="200"/>
+                    <TableColumn fx:id="colDuration" text="Duration (weeks)" prefWidth="150"/>
+                    <TableColumn fx:id="colPrice" text="Price" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.fitlife.AdminDashboardController"
+            fx:id="mainBorderPane"
+            prefWidth="800" prefHeight="500"
+            stylesheets="@style.css"
+            styleClass="root">
+
+    <!-- Top Header -->
+    <top>
+        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="top-bar">
+            <Label text="Admin Dashboard" styleClass="header-title" HBox.hgrow="ALWAYS" />
+            <Button text="Logout" onAction="#logout" styleClass="btn-secondary" />
+            <Button text="Exit" onAction="#exitApp" styleClass="btn-exit" />
+        </HBox>
+    </top>
+
+    <!-- Center placeholder -->
+    <center/>
+</BorderPane>

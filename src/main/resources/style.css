@@ -1,0 +1,105 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #1E1E2F;
+}
+
+/* Text Fields */
+.input-field {
+    -fx-background-color: #3C3C50;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #AAAAAA;
+    -fx-background-radius: 10;
+    -fx-padding: 10 12 10 12;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+}
+.input-field:focused {
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: linear-gradient(to right, #4CAF50, #45A049);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+}
+.btn-primary:hover {
+    -fx-background-color: linear-gradient(to right, #45A049, #4CAF50);
+}
+
+.btn-secondary {
+    -fx-background-color: #555555;
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+}
+.btn-secondary:hover {
+    -fx-background-color: #777777;
+}
+
+.btn-exit {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+}
+.btn-exit:hover {
+    -fx-background-color: #e53935;
+}
+/* Dashboard Layout */
+.top-bar {
+    -fx-padding: 15 25 15 25;
+    -fx-background-color: #2C2C3D;
+    -fx-alignment: center-right;
+}
+
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0 10 0 0;
+}
+
+/* Card Container */
+.card-container {
+    -fx-padding: 50;
+}
+
+/* Cards */
+.card {
+    -fx-background-color: #3C3C50;
+    -fx-background-radius: 20;
+    -fx-padding: 25;
+    -fx-pref-width: 180;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 4);
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+.card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: #4A4A65;
+}
+
+.card-icon {
+    -fx-font-size: 40px;
+    -fx-text-fill: white;
+}
+
+.card-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.card-button {
+    -fx-background-color: linear-gradient(to right, #4CAF50, #45A049);
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.card-button:hover {
+    -fx-background-color: linear-gradient(to right, #45A049, #4CAF50);
+}

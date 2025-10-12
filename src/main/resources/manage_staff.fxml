@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.fitlife.ManageStaffController"
+            style="-fx-background-color: #f5f5f5;" prefWidth="1000" prefHeight="700">
+
+    <!-- Top Bar -->
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3,0,0,1);">
+            <Button text="← Back" onAction="#goBack" style="-fx-background-color: transparent; -fx-font-size: 14;"/>
+            <Label text="Manage Staff" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Exit" onAction="#exitApp"
+                    style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
+        </HBox>
+    </top>
+
+    <!-- Center Content -->
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Staff Form -->
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="nameField" promptText="Full Name" style="-fx-background-radius: 5;" prefWidth="150"/>
+                <ComboBox fx:id="genderField" promptText="Gender" style="-fx-background-radius: 5;" prefWidth="100">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Male"/>
+                            <String fx:value="Female"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <ComboBox fx:id="roleField" promptText="Role" style="-fx-background-radius: 5;" prefWidth="150">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Trainer"/>
+                            <String fx:value="Reception"/>
+                            <String fx:value="Cleaner"/>
+                            <String fx:value="Nutritionist"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="contactField" promptText="Contact" style="-fx-background-radius: 5;" prefWidth="120"/>
+                <TextField fx:id="emailField" promptText="Email" style="-fx-background-radius: 5;" prefWidth="200"/>
+                <TextField fx:id="salaryField" promptText="Salary" style="-fx-background-radius: 5;" prefWidth="100"/>
+            </HBox>
+
+            <!-- Action Buttons -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Add" onAction="#addStaff"
+                        style="-fx-background-color: #00aaff; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Update" onAction="#updateStaff"
+                        style="-fx-background-color: #ffaa00; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Delete" onAction="#deleteStaff"
+                        style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                <Button text="Clear" onAction="#clearAllStaff"
+                        style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 5;"/>
+            </HBox>
+
+            <!-- Table -->
+            <TableView fx:id="staffTable" prefHeight="400" prefWidth="900"
+                       style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colName" text="Name" prefWidth="150"/>
+                    <TableColumn fx:id="colGender" text="Gender" prefWidth="80"/>
+                    <TableColumn fx:id="colRole" text="Role" prefWidth="120"/>
+                    <TableColumn fx:id="colContact" text="Contact" prefWidth="120"/>
+                    <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+                    <TableColumn fx:id="colSalary" text="Salary" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

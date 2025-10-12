@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.fitlife.MemberDashboardController"
+            prefWidth="600" prefHeight="400"
+            style="-fx-background-color: #f4f5f7;">
+
+    <VBox alignment="CENTER" spacing="20" AnchorPane.topAnchor="50"
+          AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50">
+        <Label text="Member Dashboard"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+        <Button text="Manage Bookings" onAction="#openBookings"
+                style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 8;" />
+        <Button text="View Programs" onAction="#openPrograms"
+                style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 8;" />
+    </VBox>
+</AnchorPane>
