@@ -47,7 +47,7 @@ public class ManageBookingController {
         membershipField.setItems(FXCollections.observableArrayList("Monthly", "Quarterly", "Annual"));
         setupTable();
         loadProgramsFromDatabase();
-        loadBookingsFromDatabase();
+        loadBookingsForCurrentUser(); // ✅ Only logged-in user's bookings
         bookingTable.setOnMouseClicked(this::handleTableClick);
     }
 
@@ -98,17 +98,19 @@ public class ManageBookingController {
         if (!validateBookingInputs()) return;
 
         try (Connection conn = DatabaseUtil.getConnection()) {
-            String insertSql = "INSERT INTO Bookings (full_name, contact, membership_type, program, start_date, sessions, total_cost) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // ✅ Include user_id to track ownership
+            String insertSql = "INSERT INTO Bookings (user_id, full_name, contact, membership_type, program, start_date, sessions, total_cost) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
 
-            ps.setString(1, nameField.getText().trim());
-            ps.setString(2, contactField.getText().trim());
-            ps.setString(3, membershipField.getValue());
-            ps.setString(4, programField.getValue());
-            ps.setDate(5, startDateField.getValue() == null ? null : Date.valueOf(startDateField.getValue()));
-            ps.setInt(6, Integer.parseInt(sessionsField.getText().trim()));
-            ps.setInt(7, Integer.parseInt(totalCostField.getText().trim()));
+            ps.setInt(1, SessionManager.getUserId()); // ✅ Current user
+            ps.setString(2, nameField.getText().trim());
+            ps.setString(3, contactField.getText().trim());
+            ps.setString(4, membershipField.getValue());
+            ps.setString(5, programField.getValue());
+            ps.setDate(6, startDateField.getValue() == null ? null : Date.valueOf(startDateField.getValue()));
+            ps.setInt(7, Integer.parseInt(sessionsField.getText().trim()));
+            ps.setInt(8, Integer.parseInt(totalCostField.getText().trim()));
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -157,7 +159,8 @@ public class ManageBookingController {
         selected.setNumSessions(Integer.parseInt(sessionsField.getText().trim()));
         selected.setTotalCost(Integer.parseInt(totalCostField.getText().trim()));
 
-        String updateSql = "UPDATE Bookings SET full_name=?, contact=?, membership_type=?, program=?, start_date=?, sessions=?, total_cost=? WHERE booking_id=?";
+        String updateSql = "UPDATE Bookings SET full_name=?, contact=?, membership_type=?, program=?, start_date=?, sessions=?, total_cost=? " +
+                "WHERE booking_id=? AND user_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(updateSql)) {
 
@@ -169,11 +172,16 @@ public class ManageBookingController {
             ps.setInt(6, selected.getNumSessions());
             ps.setInt(7, selected.getTotalCost());
             ps.setInt(8, selected.getId());
+            ps.setInt(9, SessionManager.getUserId()); // ✅ Ensure user owns it
 
-            ps.executeUpdate();
-            bookingTable.refresh();
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Booking updated successfully.");
-            clearFields();
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                bookingTable.refresh();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Booking updated successfully.");
+                clearFields();
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Unauthorized", "You can only edit your own bookings.");
+            }
         } catch (Exception ex) {
             showAlert(Alert.AlertType.ERROR, "Database Error", ex.getMessage());
         }
@@ -196,20 +204,23 @@ public class ManageBookingController {
         if (res.isEmpty() || res.get() != ButtonType.YES) return;
 
         try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Bookings WHERE booking_id=?")) {
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Bookings WHERE booking_id=? AND user_id=?")) {
             ps.setInt(1, selected.getId());
-            ps.executeUpdate();
-            bookingList.remove(selected);
-            showAlert(Alert.AlertType.INFORMATION, "Deleted", "Booking deleted successfully.");
-            clearFields();
-        } catch (SQLException ex) {
+            ps.setInt(2, SessionManager.getUserId()); // ✅ Ownership check
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                bookingList.remove(selected);
+                showAlert(Alert.AlertType.INFORMATION, "Deleted", "Booking deleted successfully.");
+                clearFields();
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Unauthorized", "You can only delete your own bookings.");
+            }
+        } catch (Exception ex) {
             showAlert(Alert.AlertType.ERROR, "Database Error", ex.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
-    // --- Load Data ---
+    // --- Load Programs ---
     private void loadProgramsFromDatabase() {
         programField.getItems().clear();
         String sql = "SELECT Name FROM Program";
@@ -224,12 +235,14 @@ public class ManageBookingController {
         }
     }
 
-    private void loadBookingsFromDatabase() {
+    // --- Load Bookings (Only current user) ---
+    private void loadBookingsForCurrentUser() {
         bookingList.clear();
-        String sql = "SELECT * FROM Bookings ORDER BY booking_id";
+        String sql = "SELECT * FROM Bookings WHERE user_id = ? ORDER BY booking_id";
         try (Connection conn = DatabaseUtil.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, SessionManager.getUserId());
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Booking b = new Booking(
                         rs.getInt("booking_id"),

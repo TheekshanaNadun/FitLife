@@ -1,6 +1,5 @@
 package com.fitlife;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,7 +27,7 @@ public class StartScreenController {
         exitBtn.setOnAction(e -> handleExit());
     }
 
-    // ✅ Allow pressing Enter to trigger login
+    // ✅ Press Enter to trigger login
     @FXML
     private void handleEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -36,7 +35,7 @@ public class StartScreenController {
         }
     }
 
-    // ✅ Login logic (case-insensitive username, case-sensitive password)
+    // ✅ Login logic (tracks user session)
     @FXML
     private void login() {
         String username = usernameField.getText().trim();
@@ -48,18 +47,29 @@ public class StartScreenController {
         }
 
         try (Connection conn = DatabaseUtil.getConnection()) {
-            // Use LOWER() for username and BINARY for password
-            String sql = "SELECT `type` FROM `Login` WHERE LOWER(`username`) = LOWER(?) AND BINARY `password` = ?";
+            // Fetch id, username, and type
+            String sql = """
+                    SELECT `id`, `username`, `type`
+                    FROM `Login`
+                    WHERE LOWER(`username`) = LOWER(?)
+                    AND BINARY `password` = ?
+                    """;
+
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             stmt.setString(2, password);
-
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String type = rs.getString("type");
+                int userId = rs.getInt("id");
+                String user = rs.getString("username");
+                String role = rs.getString("type");
 
-                if (type.equalsIgnoreCase("admin")) {
+                // ✅ Store logged-in user info globally
+                SessionManager.setSession(userId, user, role);
+
+                // Redirect based on role
+                if (role.equalsIgnoreCase("admin")) {
                     loadScreen("/admin_dashboard.fxml", "Admin Dashboard");
                 } else {
                     loadScreen("/member_dashboard.fxml", "Member Dashboard");
@@ -71,11 +81,12 @@ public class StartScreenController {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to connect to the database.\n" + ex.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Database Error",
+                    "Failed to connect to the database.\n" + ex.getMessage());
         }
     }
 
-    // ✅ Helper: Load next screen
+    // ✅ Load dashboard screen
     private void loadScreen(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -88,10 +99,12 @@ public class StartScreenController {
             stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load screen: " + fxmlPath);
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                    "Unable to load screen: " + fxmlPath);
         }
     }
 
+    // ✅ Open Register screen
     @FXML
     private void handleRegister() {
         try {
@@ -102,11 +115,12 @@ public class StartScreenController {
             stage.setTitle("Register");
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to open registration screen.");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                    "Unable to open registration screen.");
         }
     }
 
-    // ✅ Exit button handler
+    // ✅ Exit confirmation
     @FXML
     private void handleExit() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -125,7 +139,7 @@ public class StartScreenController {
         });
     }
 
-    // ✅ Common alert helper
+    // ✅ Simple reusable alert
     private void showAlert(Alert.AlertType type, String title, String msg) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
