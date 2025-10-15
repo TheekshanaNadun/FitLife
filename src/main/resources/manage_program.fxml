@@ -16,7 +16,6 @@
                     style="-fx-background-color: transparent; -fx-font-size: 14; -fx-text-fill: #333;"/>
             <Label text="Manage Programs" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Pane HBox.hgrow="ALWAYS"/>
-
         </HBox>
     </top>
 
@@ -58,6 +57,16 @@
                            style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="220"
                            GridPane.rowIndex="3" GridPane.columnIndex="1"/>
             </GridPane>
+
+            <!-- 🔸 Search Bar -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Search Program:" style="-fx-font-size: 14px; -fx-text-fill: #333;"/>
+                <TextField fx:id="searchField"
+                           promptText="Enter program name..."
+                           onKeyReleased="#searchPrograms"
+                           prefWidth="300"
+                           style="-fx-background-radius: 6; -fx-padding: 6; -fx-border-color: #ddd; -fx-border-radius: 6;"/>
+            </HBox>
 
             <!-- 🔸 Action Buttons -->
             <HBox spacing="15" alignment="CENTER">

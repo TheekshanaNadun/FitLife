@@ -10,24 +10,28 @@ import java.sql.*;
 
 public class ManageProgramsController {
 
-    @FXML private TextField programNameField, costField, descriptionField, trainerField;
+    // 🔹 FXML UI Elements
+    @FXML private TextField programNameField;
+    @FXML private TextField costField;
+    @FXML private TextField descriptionField;
+    @FXML private TextField trainerField;
+    @FXML private TextField searchField;
+
     @FXML private TableView<Program> programTable;
-    @FXML private TableColumn<Program, String> colProgramId;  // ✅ id is StringProperty
+    @FXML private TableColumn<Program, String> colProgramId;
     @FXML private TableColumn<Program, String> colProgramName;
-    @FXML private TableColumn<Program, Number> colCostPerSession; // ✅ cost is IntegerProperty
+    @FXML private TableColumn<Program, Number> colCostPerSession;
     @FXML private TableColumn<Program, String> colDescription;
     @FXML private TableColumn<Program, String> colTrainer;
-    @FXML private Button backButton, exitButton;
+
+    @FXML private Button backButton;
+    @FXML private Button exitButton;
 
     private ObservableList<Program> programList = FXCollections.observableArrayList();
     private Connection conn;
     private AdminDashboardController dashboardController;
 
-    public void setDashboardController(AdminDashboardController controller) {
-        this.dashboardController = controller;
-    }
-
-    // 🔹 Initialize
+    // 🔹 Called automatically by JavaFX
     @FXML
     public void initialize() {
         try {
@@ -36,10 +40,10 @@ public class ManageProgramsController {
             loadPrograms();
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Could not connect to database.");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Could not connect to the database.");
         }
 
-        // Table click → fill form
+        // Table selection listener
         programTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
                 programNameField.setText(newSel.getName());
@@ -53,7 +57,7 @@ public class ManageProgramsController {
         if (exitButton != null) exitButton.setOnAction(e -> exitApp());
     }
 
-    // 🔹 Bind columns to Program model
+    // 🔹 Link columns to Program model
     private void bindTableColumns() {
         colProgramId.setCellValueFactory(data -> data.getValue().idProperty());
         colProgramName.setCellValueFactory(data -> data.getValue().nameProperty());
@@ -63,12 +67,11 @@ public class ManageProgramsController {
         programTable.setItems(programList);
     }
 
-    // 🔹 Load all programs from DB
+    // 🔹 Load programs from DB
     private void loadPrograms() {
         programList.clear();
         String query = "SELECT * FROM Program";
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 programList.add(new Program(
                         rs.getString("id"),
@@ -84,7 +87,7 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Add Program
+    // 🔹 Add new program
     @FXML
     private void addProgram() {
         if (!validateInputs()) return;
@@ -106,7 +109,7 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Update Program
+    // 🔹 Update existing program
     @FXML
     private void updateProgram() {
         Program selected = programTable.getSelectionModel().getSelectedItem();
@@ -134,7 +137,7 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Delete Program
+    // 🔹 Delete selected program
     @FXML
     private void deleteProgram() {
         Program selected = programTable.getSelectionModel().getSelectedItem();
@@ -157,7 +160,25 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Clear Fields
+    // 🔹 Search programs by name, trainer, or description
+    @FXML
+    private void searchPrograms() {
+        String query = searchField.getText().trim().toLowerCase();
+        ObservableList<Program> filteredList = FXCollections.observableArrayList();
+
+        for (Program p : programList) {
+            if (p.getName().toLowerCase().contains(query)
+                    || p.getTrainer().toLowerCase().contains(query)
+                    || p.getDescription().toLowerCase().contains(query)) {
+                filteredList.add(p);
+            }
+        }
+
+        programTable.setItems(filteredList);
+        if (query.isEmpty()) programTable.setItems(programList);
+    }
+
+    // 🔹 Clear form
     @FXML
     private void clearAllPrograms() {
         clearFields();
@@ -172,7 +193,7 @@ public class ManageProgramsController {
         resetFieldStyles();
     }
 
-    // 🔹 Validation
+    // 🔹 Input validation
     private boolean validateInputs() {
         resetFieldStyles();
 
@@ -203,7 +224,7 @@ public class ManageProgramsController {
         return false;
     }
 
-    // 🔹 Alert Utility
+    // 🔹 Alerts
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -222,8 +243,13 @@ public class ManageProgramsController {
         }
     }
 
+    // 🔹 Exit App
     @FXML
     private void exitApp() {
         Platform.exit();
+    }
+
+    public void setDashboardController(AdminDashboardController controller) {
+        this.dashboardController = controller;
     }
 }

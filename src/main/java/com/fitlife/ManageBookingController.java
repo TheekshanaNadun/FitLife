@@ -340,4 +340,5 @@ public class ManageBookingController {
             if (response == ButtonType.YES) Platform.exit();
         });
     }
+
 }
