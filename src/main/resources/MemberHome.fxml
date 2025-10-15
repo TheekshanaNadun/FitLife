@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.fitlife.MemberHomeController"
+      alignment="CENTER"
+      spacing="60"
+      stylesheets="@style.css"
+      styleClass="card-container"
+      fillHeight="false"
+      prefWidth="1220" prefHeight="720">
+
+    <!-- 📅 Manage Bookings Card -->
+    <StackPane fx:id="bookingCard" styleClass="card" prefWidth="240" prefHeight="240">
+        <VBox alignment="CENTER" spacing="12">
+            <Label text="📅" styleClass="card-icon"/>
+            <Label text="Manage Bookings" styleClass="card-title"/>
+            <Button text="Open" onAction="#openManageBookings" styleClass="card-button"/>
+        </VBox>
+    </StackPane>
+
+    <!-- 📖 View Programs Card -->
+    <StackPane fx:id="programCard" styleClass="card" prefWidth="240" prefHeight="240">
+        <VBox alignment="CENTER" spacing="12">
+            <Label text="📖" styleClass="card-icon"/>
+            <Label text="View Programs" styleClass="card-title"/>
+            <Button text="Open" onAction="#openViewPrograms" styleClass="card-button"/>
+        </VBox>
+    </StackPane>
+
+</HBox>

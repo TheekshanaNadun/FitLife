@@ -3,49 +3,83 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.fitlife.ManageProgramsController"
-            style="-fx-background-color: #f5f5f5;" prefWidth="800" prefHeight="600">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.fitlife.ManageProgramsController"
+            style="-fx-background-color: #f9fafc;"
+            prefWidth="850" prefHeight="650">
 
-    <!-- Top Bar -->
+    <!-- 🔹 Top Bar -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT"
-              style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3,0,0,1);">
-            <Button text="← Back" onAction="#goBack" style="-fx-background-color: transparent; -fx-font-size: 14;"/>
+              style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);">
+            <Button text="← Back" onAction="#goBack"
+                    style="-fx-background-color: transparent; -fx-font-size: 14; -fx-text-fill: #333;"/>
             <Label text="Manage Programs" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Exit" onAction="#exitApp" style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
+
         </HBox>
     </top>
 
-    <!-- Center Content -->
+    <!-- 🔹 Center Content -->
     <center>
-        <VBox spacing="20" alignment="TOP_CENTER">
+        <VBox spacing="25" alignment="TOP_CENTER">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="25" right="20" bottom="25" left="20"/>
             </padding>
 
-            <!-- Program Form -->
-            <HBox spacing="10" alignment="CENTER">
-                <TextField fx:id="programNameField" promptText="Program Name" style="-fx-background-radius: 5;" prefWidth="200"/>
-                <TextField fx:id="durationField" promptText="Duration (weeks)" style="-fx-background-radius: 5;" prefWidth="120"/>
-                <TextField fx:id="priceField" promptText="Price" style="-fx-background-radius: 5;" prefWidth="120"/>
+            <!-- 🔸 Form Section -->
+            <GridPane hgap="20" vgap="10" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="100"/>
+                    <ColumnConstraints halignment="LEFT" minWidth="250"/>
+                </columnConstraints>
+
+                <!-- Program Name -->
+                <Label text="Program Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="programNameField" promptText="e.g. Yoga"
+                           style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="220"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <!-- Cost per Session -->
+                <Label text="Cost per Session (LKR):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="costField" promptText="e.g. 1000"
+                           style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="150"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <!-- Description -->
+                <Label text="Description:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="descriptionField" promptText="e.g. Strength and endurance training"
+                           style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="300"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <!-- Trainer -->
+                <Label text="Trainer:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="trainerField" promptText="e.g. Saman Perera"
+                           style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="220"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <!-- 🔸 Action Buttons -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="Add" onAction="#addProgram"
+                        style="-fx-background-color: #00aaff; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;"/>
+                <Button text="Update" onAction="#updateProgram"
+                        style="-fx-background-color: #ffaa00; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;"/>
+                <Button text="Delete" onAction="#deleteProgram"
+                        style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;"/>
+                <Button text="Clear" onAction="#clearAllPrograms"
+                        style="-fx-background-color: #cccccc; -fx-text-fill: #333; -fx-background-radius: 6; -fx-font-weight: bold;"/>
             </HBox>
 
-            <!-- Action Buttons -->
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Add" onAction="#addProgram" style="-fx-background-color: #00aaff; -fx-text-fill: white; -fx-background-radius: 5;"/>
-                <Button text="Update" onAction="#updateProgram" style="-fx-background-color: #ffaa00; -fx-text-fill: white; -fx-background-radius: 5;"/>
-                <Button text="Delete" onAction="#deleteProgram" style="-fx-background-color: #ff4b5c; -fx-text-fill: white; -fx-background-radius: 5;"/>
-                <Button text="Clear" onAction="#clearAllPrograms" style="-fx-background-color: #cccccc; -fx-text-fill: black; -fx-background-radius: 5;"/>
-            </HBox>
-
-            <!-- Table -->
-            <TableView fx:id="programTable" prefHeight="400" prefWidth="700" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;">
+            <!-- 🔸 Program Table -->
+            <TableView fx:id="programTable" prefHeight="380" prefWidth="780"
+                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #ddd; -fx-background-color: white;">
                 <columns>
-                    <TableColumn fx:id="colProgramId" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="colProgramName" text="Name" prefWidth="200"/>
-                    <TableColumn fx:id="colDuration" text="Duration (weeks)" prefWidth="150"/>
-                    <TableColumn fx:id="colPrice" text="Price" prefWidth="150"/>
+                    <TableColumn fx:id="colProgramId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colProgramName" text="Program Name" prefWidth="200"/>
+                    <TableColumn fx:id="colCostPerSession" text="Cost (Rs.)" prefWidth="120"/>
+                    <TableColumn fx:id="colDescription" text="Description" prefWidth="250"/>
+                    <TableColumn fx:id="colTrainer" text="Trainer" prefWidth="150"/>
                 </columns>
             </TableView>
         </VBox>

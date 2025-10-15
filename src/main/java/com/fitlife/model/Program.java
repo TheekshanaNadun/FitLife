@@ -3,25 +3,40 @@ package com.fitlife.model;
 import javafx.beans.property.*;
 
 public class Program {
-    private final IntegerProperty id;
-    private final StringProperty name;
-    private final IntegerProperty duration;
-    private final DoubleProperty price;
 
-    public Program(int id, String name, int duration, double price) {
-        this.id = new SimpleIntegerProperty(id);
+    private final StringProperty id;
+    private final StringProperty name;
+    private final IntegerProperty costPerSession;
+    private final StringProperty description;
+    private final StringProperty trainer;
+
+    // ✅ Constructor
+    public Program(String id, String name, int costPerSession, String description, String trainer) {
+        this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
-        this.duration = new SimpleIntegerProperty(duration);
-        this.price = new SimpleDoubleProperty(price);
+        this.costPerSession = new SimpleIntegerProperty(costPerSession);
+        this.description = new SimpleStringProperty(description);
+        this.trainer = new SimpleStringProperty(trainer);
     }
 
-    public int getId() { return id.get(); }
+    // ✅ Getters
+    public String getId() { return id.get(); }
     public String getName() { return name.get(); }
-    public int getDuration() { return duration.get(); }
-    public double getPrice() { return price.get(); }
+    public int getCostPerSession() { return costPerSession.get(); }
+    public String getDescription() { return description.get(); }
+    public String getTrainer() { return trainer.get(); }
 
-    public IntegerProperty idProperty() { return id; }
+    // ✅ Setters
+    public void setId(String id) { this.id.set(id); }
+    public void setName(String name) { this.name.set(name); }
+    public void setCostPerSession(int cost) { this.costPerSession.set(cost); }
+    public void setDescription(String description) { this.description.set(description); }
+    public void setTrainer(String trainer) { this.trainer.set(trainer); }
+
+    // ✅ Property Getters (for TableView binding)
+    public StringProperty idProperty() { return id; }
     public StringProperty nameProperty() { return name; }
-    public IntegerProperty durationProperty() { return duration; }
-    public DoubleProperty priceProperty() { return price; }
+    public IntegerProperty costPerSessionProperty() { return costPerSession; }
+    public StringProperty descriptionProperty() { return description; }
+    public StringProperty trainerProperty() { return trainer; }
 }

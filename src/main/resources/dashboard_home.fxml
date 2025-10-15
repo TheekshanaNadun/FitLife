@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.fitlife.DashboardHomeController"
-      spacing="50" alignment="CENTER" styleClass="card-container">
+      alignment="CENTER"
+      spacing="60"
+      stylesheets="@style.css"
+      styleClass="card-container"
+      fillHeight="false">
 
-    <VBox fx:id="staffCard" alignment="CENTER" spacing="10" styleClass="card">
-        <Label text="👤" styleClass="card-icon" />
-        <Label text="Staff" styleClass="card-title" />
-        <Button text="Open" onAction="#openManageStaff" styleClass="card-button" />
-    </VBox>
+    <!-- 🧍 Manage Staff -->
+    <StackPane fx:id="staffCard" styleClass="card" prefWidth="240" prefHeight="240">
+        <VBox alignment="CENTER" spacing="12">
+            <Label text="👤" styleClass="card-icon"/>
+            <Label text="Manage Staff" styleClass="card-title"/>
+            <Button text="Open" onAction="#openManageStaff" styleClass="card-button"/>
+        </VBox>
+    </StackPane>
 
-    <VBox fx:id="programCard" alignment="CENTER" spacing="10" styleClass="card">
-        <Label text="🏋️" styleClass="card-icon" />
-        <Label text="Programs" styleClass="card-title" />
-        <Button text="Open" onAction="#openManagePrograms" styleClass="card-button" />
-    </VBox>
+    <!-- 🏋️ Manage Programs -->
+    <StackPane fx:id="programCard" styleClass="card" prefWidth="240" prefHeight="240">
+        <VBox alignment="CENTER" spacing="12">
+            <Label text="🏋️" styleClass="card-icon"/>
+            <Label text="Manage Programs" styleClass="card-title"/>
+            <Button text="Open" onAction="#openManagePrograms" styleClass="card-button"/>
+        </VBox>
+    </StackPane>
+
 </HBox>

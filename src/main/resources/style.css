@@ -1,105 +1,176 @@
+/* =========================
+   GLOBAL BASE THEME
+   ========================= */
 .root {
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #1E1E2F;
+    -fx-font-family: "Segoe UI", "Inter", "Roboto", sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #f7f8fa, #edf1f3);
 }
 
-/* Text Fields */
-.input-field {
-    -fx-background-color: #3C3C50;
-    -fx-text-fill: #FFFFFF;
-    -fx-prompt-text-fill: #AAAAAA;
-    -fx-background-radius: 10;
-    -fx-padding: 10 12 10 12;
-    -fx-border-color: transparent;
-    -fx-font-size: 14px;
-}
-.input-field:focused {
-    -fx-border-color: #4CAF50;
-    -fx-border-width: 2;
-}
-
-/* Buttons */
-.btn-primary {
-    -fx-background-color: linear-gradient(to right, #4CAF50, #45A049);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 12;
-    -fx-cursor: hand;
-}
-.btn-primary:hover {
-    -fx-background-color: linear-gradient(to right, #45A049, #4CAF50);
-}
-
-.btn-secondary {
-    -fx-background-color: #555555;
-    -fx-text-fill: white;
-    -fx-background-radius: 12;
-}
-.btn-secondary:hover {
-    -fx-background-color: #777777;
-}
-
-.btn-exit {
-    -fx-background-color: #f44336;
-    -fx-text-fill: white;
-    -fx-background-radius: 12;
-}
-.btn-exit:hover {
-    -fx-background-color: #e53935;
-}
-/* Dashboard Layout */
+/* =========================
+   TOP BAR
+   ========================= */
 .top-bar {
-    -fx-padding: 15 25 15 25;
-    -fx-background-color: #2C2C3D;
+    -fx-background-color: #ffffff;
+    -fx-padding: 18 40;
     -fx-alignment: center-right;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
 }
 
 .header-title {
     -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #263238;
+    -fx-padding: 0 20 0 0;
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+.button {
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-background-radius: 25;
+    -fx-padding: 8 26;
+    -fx-transition: all 0.25s ease;
+}
+
+/* Primary (Orange) */
+.btn-primary {
+    -fx-background-color: #ff9800;
+    -fx-text-fill: #fff;
+}
+.btn-primary:hover {
+    -fx-background-color: #f57c00;
+}
+
+/* Secondary (Teal) */
+.btn-secondary {
+    -fx-background-color: #009688;
+    -fx-text-fill: #fff;
+}
+.btn-secondary:hover {
+    -fx-background-color: #00796b;
+}
+
+/* Exit (Red) */
+.btn-exit {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: #fff;
+}
+.btn-exit:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* =========================
+   DASHBOARD CENTER
+   ========================= */
+.dashboard-center {
+    -fx-padding: 60 0;
+    -fx-alignment: center;
+}
+
+.welcome-title {
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-padding: 0 10 0 0;
+    -fx-text-fill: #444;
+    -fx-padding: 0 0 30 0;
 }
 
-/* Card Container */
-.card-container {
-    -fx-padding: 50;
-}
-
-/* Cards */
+/* =========================
+   CARDS
+   ========================= */
 .card {
-    -fx-background-color: #3C3C50;
-    -fx-background-radius: 20;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
     -fx-padding: 25;
-    -fx-pref-width: 180;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 4);
+    -fx-pref-width: 240;
+    -fx-pref-height: 240;
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
     -fx-cursor: hand;
     -fx-transition: all 0.3s ease;
 }
+
 .card:hover {
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
-    -fx-background-color: #4A4A65;
+    -fx-background-color: #fefefe;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 16, 0, 0, 4);
 }
 
+/* Icon & Title inside cards */
 .card-icon {
-    -fx-font-size: 40px;
-    -fx-text-fill: white;
+    -fx-font-size: 48px;
+    -fx-text-fill: #009688;
 }
 
 .card-title {
-    -fx-text-fill: white;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-font-size: 16px;
+    -fx-text-fill: #333;
 }
 
-.card-button {
-    -fx-background-color: linear-gradient(to right, #4CAF50, #45A049);
+/* Fix the "Open" button on cards */
+.card-button, .btn-card {
+    -fx-background-color: #ff9800;
     -fx-text-fill: white;
-    -fx-background-radius: 12;
     -fx-font-weight: bold;
-    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-background-radius: 25;
+    -fx-padding: 7 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
 }
-.card-button:hover {
-    -fx-background-color: linear-gradient(to right, #45A049, #4CAF50);
+.card-button:hover, .btn-card:hover {
+    -fx-background-color: #f57c00;
+}
+
+/* =========================
+   TABLES & FORMS (Shared)
+   ========================= */
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 10;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #009688;
+    -fx-border-width: 2;
+}
+
+/* =========================
+   TABLE VIEW
+   ========================= */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+}
+.table-column-header {
+    -fx-background-color: #009688;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.table-row-cell:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+/* =========================
+   SCROLLBARS
+   ========================= */
+.scroll-bar:thumb {
+    -fx-background-color: #bbb;
+    -fx-background-radius: 5;
+}
+
+/* Smooth hover animation */
+.card, .button, .label {
+    -fx-transition: all 0.3s ease;
 }

@@ -2,15 +2,10 @@ package com.fitlife;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class DashboardHomeController {
-
-    @FXML
-    private VBox staffCard;
-
-    @FXML
-    private VBox programCard;
 
     private AdminDashboardController dashboardController;
 
@@ -27,4 +22,7 @@ public class DashboardHomeController {
     private void openManagePrograms(ActionEvent event) {
         dashboardController.openManagePrograms();
     }
+
+    @FXML private StackPane staffCard;
+    @FXML private StackPane programCard;
 }

@@ -1,45 +1,68 @@
 package com.fitlife;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.Node;
-import javafx.event.ActionEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 public class MemberDashboardController {
 
     @FXML
-    private void openManageBookings(ActionEvent event) {
-        loadScreen(event, "/manage_bookings.fxml", "Manage Bookings");
-    }
+    private BorderPane mainBorderPane;
 
     @FXML
-    private void openViewPrograms(ActionEvent event) {
-        loadScreen(event, "/view_programs.fxml", "View Programs");
+    public void initialize() {
+        showHome();
     }
 
-    private void loadScreen(ActionEvent event, String fxmlPath, String title) {
+    public void showHome() {
+        loadCenterView("/MemberHome.fxml", controller -> {
+            if (controller instanceof MemberHomeController homeController) {
+                homeController.setDashboardController(this);
+            }
+        });
+    }
+
+    private void loadCenterView(String fxmlPath, java.util.function.Consumer<Object> controllerHandler) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(loader.load());
+            Pane view = loader.load();
 
-            // Replace current stage scene
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle(title);
-            stage.setScene(scene);
+            Object controller = loader.getController();
+            if (controllerHandler != null)
+                controllerHandler.accept(controller);
 
+            mainBorderPane.setCenter(view);
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "Failed to load screen: " + title);
+            showAlert("Error loading view: " + fxmlPath);
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
+    @FXML
+    private void logout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+            mainBorderPane.getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error returning to login!");
+        }
+    }
+
+    @FXML
+    private void exitApp() {
+        Platform.exit();
+    }
+
+    public BorderPane getMainBorderPane() {
+        return mainBorderPane;
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

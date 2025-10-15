@@ -21,6 +21,16 @@ public class Staff {
         this.salary = new SimpleIntegerProperty(salary);
     }
 
+    // --- Getters (Optional but useful) ---
+    public String getId() { return id.get(); }
+    public String getName() { return name.get(); }
+    public String getGender() { return gender.get(); }
+    public String getRole() { return role.get(); }
+    public String getContact() { return contact.get(); }
+    public String getEmail() { return email.get(); }
+    public int getSalary() { return salary.get(); }
+
+    // --- Property Getters for TableView binding ---
     public StringProperty idProperty() { return id; }
     public StringProperty nameProperty() { return name; }
     public StringProperty genderProperty() { return gender; }
