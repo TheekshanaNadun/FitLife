@@ -28,6 +28,7 @@ public class ViewProgramsController {
     @FXML
     public void initialize() {
         // Configure table columns to match Program model
+        programTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         colId.setCellValueFactory(cell -> cell.getValue().idProperty());
         colName.setCellValueFactory(cell -> cell.getValue().nameProperty());
         colCost.setCellValueFactory(cell -> cell.getValue().costPerSessionProperty().asObject());

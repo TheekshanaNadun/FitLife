@@ -6,6 +6,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.fitlife.ManageBookingController"
             prefWidth="1000" prefHeight="700"
+            stylesheets="@style.css"
             style="-fx-background-color: #f9fafc;">
 
     <!-- 🔹 Top Bar -->
@@ -14,9 +15,8 @@
               style="-fx-background-color: #ffffff; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);">
             <Button text="← Back" onAction="#goBack"
                     style="-fx-background-color: transparent; -fx-font-size: 14; -fx-text-fill: #333;"/>
-            <Label text="Manag Bookings" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Label text="Manage Bookings" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Pane HBox.hgrow="ALWAYS"/>
-
         </HBox>
     </top>
 
@@ -37,21 +37,17 @@
                 </columnConstraints>
 
                 <!-- Left Column -->
-                <Label text="Booking ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <TextField fx:id="bookingIdField" promptText="B001" editable="false"
+                <Label text="Full Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="nameField" promptText="Full Name"
                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                <Label text="Full Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <TextField fx:id="nameField" promptText="Full Name"
+                <Label text="Contact Number:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="contactField" promptText="0712345678"
                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                <Label text="Contact Number:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <TextField fx:id="contactField" promptText="0712345678"
-                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-                <Label text="Membership Type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label text="Membership Type:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                 <ComboBox fx:id="membershipField" promptText="Select Type"
-                          GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                          GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
                 <!-- Right Column -->
                 <Label text="Program:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
@@ -69,7 +65,8 @@
 
                 <Label text="Total Cost (Rs):" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
                 <TextField fx:id="totalCostField" editable="false"
-                           GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+                           GridPane.rowIndex="3" GridPane.columnIndex="3"
+                           style="-fx-background-color: #f2f2f2; -fx-border-color: #ccc; -fx-background-radius: 6;"/>
             </GridPane>
 
             <!-- 🔸 Action Buttons -->
@@ -84,9 +81,8 @@
                         style="-fx-background-color: #cccccc; -fx-text-fill: #333; -fx-background-radius: 6; -fx-font-weight: bold;"/>
             </HBox>
 
-            <!-- 🔸 Booking Table -->
-            <TableView fx:id="bookingTable" prefWidth="900" prefHeight="300"
-                       style="-fx-background-radius: 6; -fx-border-color: #ddd; -fx-background-color: white;">
+            <!-- 🔸 Booking Table (Modern Style) -->
+            <TableView fx:id="bookingTable" prefWidth="900" prefHeight="300" styleClass="modern-table">
                 <columns>
                     <TableColumn fx:id="colBookingId" text="Booking ID" prefWidth="90"/>
                     <TableColumn fx:id="colName" text="Full Name" prefWidth="150"/>
