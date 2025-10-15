@@ -5,6 +5,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.fitlife.ManageProgramsController"
+            stylesheets="@style.css"
             style="-fx-background-color: #f9fafc;"
             prefWidth="850" prefHeight="650">
 
@@ -81,7 +82,7 @@
             </HBox>
 
             <!-- 🔸 Program Table -->
-            <TableView fx:id="programTable" prefHeight="380" prefWidth="780"
+            <TableView fx:id="programTable" prefHeight="380" prefWidth="780" styleClass="modern-table"
                        style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #ddd; -fx-background-color: white;">
                 <columns>
                     <TableColumn fx:id="colProgramId" text="ID" prefWidth="60"/>

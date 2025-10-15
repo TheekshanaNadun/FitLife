@@ -7,6 +7,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.fitlife.ManageStaffController"
+            stylesheets="@style.css"
             prefWidth="1000" prefHeight="700"
             style="-fx-background-color: #f8f9fa;">
 
@@ -101,7 +102,7 @@
             </HBox>
 
             <!-- Table Section -->
-            <TableView fx:id="staffTable" prefHeight="350" prefWidth="900"
+            <TableView fx:id="staffTable" prefHeight="350" prefWidth="900" styleClass="modern-table"
                        style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #ddd;">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="50"/>

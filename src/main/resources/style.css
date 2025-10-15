@@ -260,29 +260,32 @@
     -fx-background-color: #f8fcff;
 }
 
+/* ❌ Removed hover effect — keep it simple and static */
 .modern-table .table-row-cell:hover {
-    -fx-background-color: #e6f4ff;
+    -fx-background-color: white;
 }
 
-/* --- Selected Row --- */
+/* ✅ Selected Row — pure white with black text */
 .modern-table .table-row-cell:selected {
-    -fx-background-color: #cdefff;
-    -fx-text-fill: #000000; /* ✅ Keep text black */
+    -fx-background-color: white;
+    -fx-text-fill: #000000;
+    -fx-border-color: #0099dd; /* optional thin outline */
+    -fx-border-width: 0 0 1 0;
 }
 
 /* --- Table Cells --- */
 .modern-table .table-cell {
     -fx-padding: 8 10;
-    -fx-text-fill: #000000; /* ✅ Ensure black text always */
+    -fx-text-fill: #000000; /* Always black text */
 }
 
-/* --- Remove white-on-blue text bug when focused --- */
+/* --- Remove focus highlight issues --- */
 .modern-table:focused .table-row-cell:filled:selected {
-    -fx-background-color: #bde8ff;
+    -fx-background-color: white;
     -fx-text-fill: #000000;
 }
 
-/* --- Scrollbar Style --- */
+/* --- Scrollbar --- */
 .scroll-bar:vertical, .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
@@ -290,9 +293,4 @@
 .scroll-bar .thumb {
     -fx-background-color: rgba(0,0,0,0.2);
     -fx-background-radius: 5;
-}
-
-/* --- Smooth Hover Transition --- */
-.modern-table .table-row-cell {
-    -fx-transition: all 0.2s ease-in-out;
 }

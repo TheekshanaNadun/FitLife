@@ -28,7 +28,7 @@
                 <TextField fx:id="searchField" promptText="Enter program name..." onKeyReleased="#searchPrograms" prefWidth="300"/>
             </HBox>
 
-            <TableView fx:id="programTable" prefHeight="400" prefWidth="750">
+            <TableView fx:id="programTable" prefHeight="400" prefWidth="750" styleClass="modern-table">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
                     <TableColumn fx:id="colName" text="Program Name" prefWidth="200"/>
