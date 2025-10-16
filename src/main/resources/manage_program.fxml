@@ -54,9 +54,12 @@
 
                 <!-- Trainer -->
                 <Label text="Trainer:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <TextField fx:id="trainerField" promptText="e.g. Saman Perera"
-                           style="-fx-background-radius: 6; -fx-padding: 6;" prefWidth="220"
-                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <ComboBox fx:id="trainerField"
+                          promptText="Select Trainer"
+                          style="-fx-background-radius: 6; -fx-padding: 6;"
+                          prefWidth="220"
+                          GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
             </GridPane>
 
             <!-- 🔸 Search Bar -->

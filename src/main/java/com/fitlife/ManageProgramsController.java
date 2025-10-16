@@ -14,7 +14,7 @@ public class ManageProgramsController {
     @FXML private TextField programNameField;
     @FXML private TextField costField;
     @FXML private TextField descriptionField;
-    @FXML private TextField trainerField;
+    @FXML private ComboBox<String> trainerField; // ✅ Changed from TextField → ComboBox<String>
     @FXML private TextField searchField;
 
     @FXML private TableView<Program> programTable;
@@ -24,20 +24,19 @@ public class ManageProgramsController {
     @FXML private TableColumn<Program, String> colDescription;
     @FXML private TableColumn<Program, String> colTrainer;
 
-    @FXML private Button backButton;
-    @FXML private Button exitButton;
-
     private ObservableList<Program> programList = FXCollections.observableArrayList();
+    private ObservableList<String> trainerList = FXCollections.observableArrayList();
     private Connection conn;
     private AdminDashboardController dashboardController;
 
-    // 🔹 Called automatically by JavaFX
+    // 🔹 Initialize
     @FXML
     public void initialize() {
         try {
             conn = DatabaseUtil.getConnection();
             bindTableColumns();
             loadPrograms();
+            loadTrainers(); // ✅ Load trainers into ComboBox
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Could not connect to the database.");
@@ -49,12 +48,24 @@ public class ManageProgramsController {
                 programNameField.setText(newSel.getName());
                 costField.setText(String.valueOf(newSel.getCostPerSession()));
                 descriptionField.setText(newSel.getDescription());
-                trainerField.setText(newSel.getTrainer());
+                trainerField.setValue(newSel.getTrainer());
             }
         });
+    }
 
-        if (backButton != null) backButton.setOnAction(e -> goBack());
-        if (exitButton != null) exitButton.setOnAction(e -> exitApp());
+    // 🔹 Load Trainer Names (Role = 'Trainer')
+    private void loadTrainers() {
+        trainerList.clear();
+        String query = "SELECT name FROM Staff WHERE role = 'Trainer'";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                trainerList.add(rs.getString("name"));
+            }
+            trainerField.setItems(trainerList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load trainers list.");
+        }
     }
 
     // 🔹 Link columns to Program model
@@ -67,7 +78,7 @@ public class ManageProgramsController {
         programTable.setItems(programList);
     }
 
-    // 🔹 Load programs from DB
+    // 🔹 Load all programs
     private void loadPrograms() {
         programList.clear();
         String query = "SELECT * FROM Program";
@@ -97,7 +108,7 @@ public class ManageProgramsController {
             ps.setString(1, programNameField.getText().trim());
             ps.setInt(2, Integer.parseInt(costField.getText().trim()));
             ps.setString(3, descriptionField.getText().trim());
-            ps.setString(4, trainerField.getText().trim());
+            ps.setString(4, trainerField.getValue());
             ps.executeUpdate();
 
             showAlert(Alert.AlertType.INFORMATION, "Success", "Program added successfully!");
@@ -124,7 +135,7 @@ public class ManageProgramsController {
             ps.setString(1, programNameField.getText().trim());
             ps.setInt(2, Integer.parseInt(costField.getText().trim()));
             ps.setString(3, descriptionField.getText().trim());
-            ps.setString(4, trainerField.getText().trim());
+            ps.setString(4, trainerField.getValue());
             ps.setString(5, selected.getId());
             ps.executeUpdate();
 
@@ -137,7 +148,7 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Delete selected program
+    // 🔹 Delete program
     @FXML
     private void deleteProgram() {
         Program selected = programTable.getSelectionModel().getSelectedItem();
@@ -160,7 +171,7 @@ public class ManageProgramsController {
         }
     }
 
-    // 🔹 Search programs by name, trainer, or description
+    // 🔹 Search programs
     @FXML
     private void searchPrograms() {
         String query = searchField.getText().trim().toLowerCase();
@@ -178,7 +189,7 @@ public class ManageProgramsController {
         if (query.isEmpty()) programTable.setItems(programList);
     }
 
-    // 🔹 Clear form
+    // 🔹 Clear fields
     @FXML
     private void clearAllPrograms() {
         clearFields();
@@ -188,65 +199,42 @@ public class ManageProgramsController {
         programNameField.clear();
         costField.clear();
         descriptionField.clear();
-        trainerField.clear();
+        trainerField.getSelectionModel().clearSelection();
         programTable.getSelectionModel().clearSelection();
-        resetFieldStyles();
     }
 
     // 🔹 Input validation
     private boolean validateInputs() {
-        resetFieldStyles();
-
         String name = programNameField.getText().trim();
         String cost = costField.getText().trim();
         String desc = descriptionField.getText().trim();
-        String trainer = trainerField.getText().trim();
+        String trainer = trainerField.getValue();
 
-        if (name.isEmpty()) return highlightError(programNameField, "Program name is required.");
-        if (!cost.matches("\\d+")) return highlightError(costField, "Cost must be a valid number.");
-        if (desc.isEmpty()) return highlightError(descriptionField, "Description cannot be empty.");
-        if (trainer.isEmpty() || !trainer.matches("^[A-Za-z ]+$"))
-            return highlightError(trainerField, "Trainer name must contain only letters.");
+        if (name.isEmpty()) return showValidationError("Program name is required.");
+        if (!cost.matches("\\d+")) return showValidationError("Cost must be a valid number.");
+        if (desc.isEmpty()) return showValidationError("Description cannot be empty.");
+        if (trainer == null || trainer.isEmpty()) return showValidationError("Please select a trainer.");
 
         return true;
     }
 
-    private void resetFieldStyles() {
-        programNameField.setStyle(null);
-        costField.setStyle(null);
-        descriptionField.setStyle(null);
-        trainerField.setStyle(null);
-    }
-
-    private boolean highlightError(Control field, String message) {
-        field.setStyle("-fx-border-color: red; -fx-background-color: #ffeeee;");
-        showAlert(Alert.AlertType.WARNING, "Validation Error", message);
+    private boolean showValidationError(String msg) {
+        showAlert(Alert.AlertType.WARNING, "Validation Error", msg);
         return false;
     }
 
     // 🔹 Alerts
-    private void showAlert(Alert.AlertType type, String title, String message) {
+    private void showAlert(Alert.AlertType type, String title, String msg) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 
-    // 🔹 Navigation
     @FXML
     private void goBack() {
-        if (dashboardController != null) {
-            dashboardController.showHome();
-        } else {
-            System.out.println("Dashboard controller is null!");
-        }
-    }
-
-    // 🔹 Exit App
-    @FXML
-    private void exitApp() {
-        Platform.exit();
+        if (dashboardController != null) dashboardController.showHome();
     }
 
     public void setDashboardController(AdminDashboardController controller) {
