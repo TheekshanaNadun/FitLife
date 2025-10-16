@@ -81,17 +81,26 @@
                         style="-fx-background-color: #cccccc; -fx-text-fill: #333; -fx-background-radius: 6; -fx-font-weight: bold;"/>
             </HBox>
 
-            <!-- 🔸 Program Table -->
-            <TableView fx:id="programTable" prefHeight="380" prefWidth="780" styleClass="modern-table"
-                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #ddd; -fx-background-color: white;">
+            <TableView fx:id="programTable"
+                       prefHeight="380"
+                       prefWidth="1150"
+                       styleClass="modern-table"
+                       style="-fx-background-radius: 6;
+                  -fx-border-radius: 6;
+                  -fx-border-color: #ddd;
+                  -fx-background-color: white;">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
                 <columns>
-                    <TableColumn fx:id="colProgramId" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="colProgramName" text="Program Name" prefWidth="200"/>
-                    <TableColumn fx:id="colCostPerSession" text="Cost (Rs.)" prefWidth="120"/>
-                    <TableColumn fx:id="colDescription" text="Description" prefWidth="250"/>
-                    <TableColumn fx:id="colTrainer" text="Trainer" prefWidth="150"/>
+                    <TableColumn fx:id="colProgramId" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="colProgramName" text="Program Name" prefWidth="250"/>
+                    <TableColumn fx:id="colCostPerSession" text="Cost (Rs.)" prefWidth="180"/>
+                    <TableColumn fx:id="colDescription" text="Description" prefWidth="420"/>
+                    <TableColumn fx:id="colTrainer" text="Trainer" prefWidth="220"/>
                 </columns>
             </TableView>
+
         </VBox>
     </center>
 </BorderPane>
